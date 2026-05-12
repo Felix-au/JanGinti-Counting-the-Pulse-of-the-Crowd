@@ -110,7 +110,10 @@ JanGinti addresses this gap by introducing a **custom Part C dataset** of 85 Ind
   <br/><em>Predictions on custom Indian crowd images (Part C) — temples, railways, festivals, markets</em>
 </p>
 
----
+<p align="center">
+  <img src="Screenshot/crowdflow-simulator-in-action.PNG" width="800" alt="JanGinti Crowd Flow Simulator"/>
+  <br/><em>Interactive crowd flow simulator — Railway Station scenario with 8 areas, 15 pathways, and automated crowd management rules</em>
+</p>
 
 ## ✨ Features
 

@@ -416,6 +416,11 @@ All charts are in the `visualizations/` directory:
 
 ## Web Application Architecture
 
+<p align="center">
+  <img src="Screenshot/crowdflow-simulator-in-action.PNG" width="800" alt="JanGinti Crowd Flow Simulator"/>
+  <br/><em>Interactive crowd flow simulator — Railway Station scenario with 8 areas, 15 pathways, and automated crowd management rules</em>
+</p>
+
 ### System Overview
 
 ```

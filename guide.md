@@ -44,6 +44,11 @@ Both notebooks are designed for **Colab with T4 GPU**. They save checkpoints and
 
 ## 🎯 How to Use the Simulator
 
+<p align="center">
+  <img src="Screenshot/crowdflow-simulator-in-action.PNG" width="800" alt="JanGinti Simulator in Action"/>
+  <br/><em>Railway Station scenario — 8 areas, 15 pathways, automated crowd management rules, real-time overview panel</em>
+</p>
+
 1. **Launch** the frontend (`npm run dev`) and backend (`python server.py`)
 2. **Explore scenarios** — click pre-configured scenarios in the left sidebar
 3. **Add areas** — press `2` or click "Add Area" in the toolbar, then click the canvas
