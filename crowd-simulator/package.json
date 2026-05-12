@@ -1,6 +1,6 @@
 {
-  "name": "crowd-simulator",
-  "version": "0.0.0",
+  "name": "janginti",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {

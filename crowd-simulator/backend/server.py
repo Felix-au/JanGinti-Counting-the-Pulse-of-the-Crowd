@@ -46,7 +46,7 @@ preprocess = transforms.Compose([
 ])
 
 # ── FastAPI App ──
-app = FastAPI(title="CrowdFlow CSRNet API", version="1.0")
+app = FastAPI(title="JanGinti — CSRNet Crowd Density API", version="1.0")
 
 app.add_middleware(
     CORSMiddleware,
