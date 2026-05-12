@@ -3,11 +3,6 @@ node_modules/
 __pycache__/
 *.pyc
 
-# Model weights (too large for git)
-*.pth
-*.pth.tar
-crowd-simulator/backend/weights/
-
 # Dataset (too large for git)
 dataset/
 
