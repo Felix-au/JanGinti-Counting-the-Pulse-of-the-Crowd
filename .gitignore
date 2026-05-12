@@ -3,6 +3,10 @@ node_modules/
 __pycache__/
 *.pyc
 
+# Model weights (too large for GitHub — 124 MB exceeds 100 MB limit)
+*.pth
+*.pth.tar
+
 # Dataset (too large for git)
 dataset/
 
