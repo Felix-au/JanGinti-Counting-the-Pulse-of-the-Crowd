@@ -26,7 +26,7 @@
 
 ```
 ┌──────────────┐     ┌──────────────┐     ┌──────────────────┐     ┌──────────────┐     ┌────────────────┐
-│  ShanghaiTech│────▶│  Gaussian    │───▶│  CSRNet          │───▶│  Fine-Tune   │────▶│  Web App       │
+│  ShanghaiTech│───▶│  Gaussian    │───▶ │  CSRNet          │───▶│  Fine-Tune   │────▶│  Web App       │
 │  Dataset     │     │  Density     │     │  Train (Plan 1)  │     │  on A+B+C    │     │  FastAPI +     │
 │  A + B + C   │     │  Maps (.h5)  │     │  from scratch    │     │  (Plan 2)    │     │  Vite Canvas   │
 └──────────────┘     └──────────────┘     └──────────────────┘     └──────────────┘     └────────────────┘
@@ -109,38 +109,38 @@ Input Image (H × W × 3)
 ┌─────────────────────────────────────────────┐
 │  FRONTEND: VGG-16 (first 23 layers)         │
 │                                             │
-│  Conv1_1 (3→64)  → ReLU → Conv1_2 → ReLU   │
+│  Conv1_1 (3→64)  → ReLU → Conv1_2 → ReLU    │
 │  MaxPool 2×2                                │
-│  Conv2_1 (64→128) → ReLU → Conv2_2 → ReLU  │
+│  Conv2_1 (64→128) → ReLU → Conv2_2 → ReLU   │
 │  MaxPool 2×2                                │
-│  Conv3_1 (128→256) → ReLU → Conv3_2 → ReLU │
+│  Conv3_1 (128→256) → ReLU → Conv3_2 → ReLU  │
 │  Conv3_3 → ReLU                             │
 │  MaxPool 2×2                                │
-│  Conv4_1 (256→512) → ReLU → Conv4_2 → ReLU │
+│  Conv4_1 (256→512) → ReLU → Conv4_2 → ReLU  │
 │  Conv4_3 → ReLU                             │
 │                                             │
-│  Output: 512 channels at H/8 × W/8         │
+│  Output: 512 channels at H/8 × W/8          │
 └─────────────────────┬───────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────┐
 │  BACKEND: 6 Dilated Convolution Layers      │
 │                                             │
-│  DilConv (512→512, d=2, p=2) → ReLU        │
-│  DilConv (512→512, d=2, p=2) → ReLU        │
-│  DilConv (512→512, d=2, p=2) → ReLU        │
-│  DilConv (512→256, d=2, p=2) → ReLU        │
-│  DilConv (256→128, d=2, p=2) → ReLU        │
-│  DilConv (128→64,  d=2, p=2) → ReLU        │
+│  DilConv (512→512, d=2, p=2) → ReLU         │
+│  DilConv (512→512, d=2, p=2) → ReLU         │
+│  DilConv (512→512, d=2, p=2) → ReLU         │
+│  DilConv (512→256, d=2, p=2) → ReLU         │
+│  DilConv (256→128, d=2, p=2) → ReLU         │
+│  DilConv (128→64,  d=2, p=2) → ReLU         │
 │                                             │
-│  Weights initialized: N(0, 0.01)           │
+│  Weights initialized: N(0, 0.01)            │
 └─────────────────────┬───────────────────────┘
                       │
                       ▼
 ┌─────────────────────────────────────────────┐
 │  OUTPUT: 1×1 Conv (64→1)                    │
 │                                             │
-│  → Single-channel density map (H/8 × W/8)  │
+│  → Single-channel density map (H/8 × W/8)   │
 │  → Sum of all pixels = predicted count      │
 └─────────────────────────────────────────────┘
 
@@ -296,9 +296,9 @@ The core preprocessing step: converting sparse head annotations into dense proba
 Head annotation (.mat)           Density map (.h5)
                                 
   ·    ·                         ░░▒▒▓▓▒▒░░
-    ·     ·   ·                  ░▒▓██▓▒░
-  ·   ·                   →     ░░▒▓██▓▒░░
-      ·  ·                       ░▒▓██▓▒░
+    ·     ·   ·                  ░▒▓██▓  ▒░
+  ·   ·                   →      ░░▒▓██▓▒░░
+      ·  ·                       ░▒▓██▓  ▒░
    ·        ·                    ░░▒▒▓▓▒▒░░
                                 
   Each dot = 1 person            Gaussian blur (σ=15)
@@ -425,7 +425,7 @@ All charts are in the `visualizations/` directory:
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│                    JanGinti Web Application                    │
+│                    JanGinti Web Application                  │
 │                                                              │
 │  ┌────────────────────────┐    ┌───────────────────────────┐ │
 │  │  Frontend (Vite)       │    │  Backend (FastAPI)        │ │
