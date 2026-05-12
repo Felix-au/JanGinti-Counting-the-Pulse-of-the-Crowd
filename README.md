@@ -154,7 +154,7 @@ JanGinti addresses this gap by introducing a **custom Part C dataset** of 85 Ind
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                    JanGinti System                                │
+│                    JanGinti System                               │
 │                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐    │
 │  │  Training Pipeline (Google Colab T4)                     │    │
@@ -166,18 +166,18 @@ JanGinti addresses this gap by introducing a **custom Part C dataset** of 85 Ind
 │  │       │                                                  │    │
 │  │       ▼                                                  │    │
 │  │  ┌──────────┐    ┌──────────────┐    ┌───────────────┐   │    │
-│  │  │ Plan 1   │───▶│   Plan 2     │───▶│  Final Model  │   │    │
+│  │  │ Plan 1   │──▶│   Plan 2     │───▶│  Final Model  │   │    │
 │  │  │ Scratch  │    │  Fine-Tune   │    │  (.pth.tar)   │   │    │
 │  │  │ Part A   │    │  A+B+C       │    │  130 MB       │   │    │
 │  │  │ 1000 ep  │    │  500 ep      │    └───────┬───────┘   │    │
 │  │  └──────────┘    └──────────────┘            │           │    │
 │  └──────────────────────────────────────────────┼───────────┘    │
-│                                                  │               │
+│                                                 │                │
 │  ┌──────────────────────────────────────────────┼───────────┐    │
 │  │  Web Application                             │           │    │
 │  │                                              ▼           │    │
 │  │  ┌──────────────┐    ┌──────────────────────────────┐    │    │
-│  │  │  Frontend    │    │  Backend (FastAPI)            │    │    │
+│  │  │  Frontend    │    │  Backend (FastAPI)           │    │    │
 │  │  │  Vite +      │◄──►│                              │    │    │
 │  │  │  Canvas      │    │  CSRNet Model loaded on      │    │    │
 │  │  │  Simulator   │    │  GPU/CPU → density inference │    │    │
