@@ -3,6 +3,9 @@ node_modules/
 __pycache__/
 *.pyc
 
+# Dataset (too large for git)
+dataset/
+
 # OS / IDE
 .DS_Store
 Thumbs.db
