@@ -14,6 +14,7 @@
   <img src="https://img.shields.io/badge/dataset-ShanghaiTech_A+B+C-4285F4?style=flat-square" alt="Dataset" />
   <img src="https://img.shields.io/badge/training-Google_Colab_T4-F9AB00?style=flat-square&logo=googlecolab&logoColor=white" alt="Colab" />
   <img src="https://img.shields.io/badge/params-16.3M-blueviolet?style=flat-square" alt="Params" />
+  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License" />
 </p>
 
 ---
@@ -31,6 +32,7 @@
 - [Dependencies](#-dependencies)
 - [Results](#-results)
 - [Improvement Ideas](#-improvement-ideas)
+- [License](#-license)
 - [Author](#-author)
 
 ---
@@ -459,6 +461,12 @@ JanGinti/
 - **Export Reports** — Generate PDF reports from the simulator with scenario configs and crowd counts
 - **Mobile Responsive** — Make the canvas simulator work on tablets and phones
 - **CI/CD** — Add GitHub Actions for automated model evaluation on PRs
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
 ---
 
