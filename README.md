@@ -154,6 +154,25 @@ JanGinti addresses this gap by introducing a **custom Part C dataset** of 85 Ind
 
 ## 🏗 Architecture
 
+```mermaid
+graph TD
+    subgraph Train["Training Pipeline (Google Colab T4)"]
+        DS["Dataset A+B+C\n770 images"] --> DM["Gaussian Density Maps (.h5)"]
+        DM --> P1["Plan 1 — Scratch\nPart A · 1000 epochs"]
+        P1 --> P2["Plan 2 — Fine-Tune\nA+B+C · 500 epochs"]
+        P2 --> MODEL["Final Model (.pth.tar)\n130 MB"]
+    end
+
+    MODEL --> BE["Backend (FastAPI)\nCSRNet density inference\nGPU/CPU"]
+
+    subgraph Web["Web Application"]
+        FE["Frontend\nVite + Canvas Simulator"] <-->|POST /predict| BE
+    end
+```
+
+<details>
+<summary>ASCII fallback (click to expand)</summary>
+
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │                    JanGinti System                               │
@@ -188,7 +207,22 @@ JanGinti addresses this gap by introducing a **custom Part C dataset** of 85 Ind
 └──────────────────────────────────────────────────────────────────┘
 ```
 
+</details>
+
 ### Inference Pipeline
+
+```mermaid
+flowchart TD
+    A["Upload crowd image"] --> B["Resize (max 1024px)\nImageNet normalize"]
+    B --> C["VGG-16 Frontend (23 layers)\n512-ch feature maps (1/8 scale)"]
+    C --> D["Dilated Conv Backend (6 layers)\n64-ch feature maps"]
+    D --> E["1×1 Conv Output\nsingle-channel density map"]
+    E --> F["Sum density map\npredicted crowd count"]
+    F --> G["JSON response\n{count, confidence, densityMax, densityMean}"]
+```
+
+<details>
+<summary>ASCII fallback (click to expand)</summary>
 
 ```
 Upload crowd image → Resize (max 1024px) → ImageNet normalize
@@ -209,6 +243,8 @@ Sum density map → predicted crowd count
        ▼
 JSON response: {count, confidence, densityMax, densityMean}
 ```
+
+</details>
 
 ---
 
