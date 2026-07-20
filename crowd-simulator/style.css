@@ -31,6 +31,10 @@
   --transition-med: 250ms ease;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html, body {
   height: 100%;
   overflow: hidden;
@@ -39,6 +43,11 @@ html, body {
   color: var(--text-primary);
   background: var(--bg-primary);
   -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--accent-cyan);
+  color: #09090b;
 }
 
 /* ── Layout ── */
