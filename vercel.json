@@ -1,0 +1,11 @@
+{
+  "buildCommand": "cd crowd-simulator && npm install && npm run build",
+  "outputDirectory": "crowd-simulator/dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
