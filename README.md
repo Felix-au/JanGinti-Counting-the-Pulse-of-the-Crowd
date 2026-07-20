@@ -6,8 +6,12 @@
   <strong>CSRNet-powered crowd density estimation with an interactive web simulator</strong><br/>
   <em>Two-phase training on ShanghaiTech + custom Indian crowd dataset → deployed as a real-time web application</em>
 </p>
+<p align="center">
+  <a href="https://janginti.felixau.in/" target="_blank"><strong>🚀 Live Web Application: janginti.felixau.in</strong></a>
+</p>
 
 <p align="center">
+  <a href="https://janginti.felixau.in/"><img src="https://img.shields.io/badge/live_demo-janginti.felixau.in-00D4FF?style=flat-square&logo=vercel&logoColor=white" alt="Live Demo" /></a>
   <img src="https://img.shields.io/badge/model-CSRNet-FF6F00?style=flat-square&logo=pytorch&logoColor=white" alt="CSRNet" />
   <img src="https://img.shields.io/badge/backend-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI" />
   <img src="https://img.shields.io/badge/frontend-Vite_+_Canvas-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
