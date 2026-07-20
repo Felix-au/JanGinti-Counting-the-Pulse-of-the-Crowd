@@ -162,7 +162,7 @@ export class AreaRenderer {
     ctx.lineTo(x + 7, y + 3);
     ctx.fill();
     // Lens
-    ctx.fillStyle = '#0a0e1a';
+    ctx.fillStyle = '#09090b';
     ctx.beginPath();
     ctx.arc(x, y + 1, 3, 0, Math.PI * 2);
     ctx.fill();

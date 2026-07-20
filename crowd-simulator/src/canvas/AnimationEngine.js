@@ -86,8 +86,8 @@ export class AnimationEngine {
 
     // Clear with gradient background
     const bg = ctx.createLinearGradient(0, 0, w, h);
-    bg.addColorStop(0, '#0a0e1a');
-    bg.addColorStop(1, '#111827');
+    bg.addColorStop(0, '#09090b');
+    bg.addColorStop(1, '#121215');
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, w, h);
 

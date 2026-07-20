@@ -8,9 +8,9 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #111827;
-  --bg-card: rgba(17, 24, 39, 0.8);
+  --bg-primary: #09090b;
+  --bg-secondary: #121215;
+  --bg-card: rgba(22, 22, 26, 0.85);
   --bg-glass: rgba(255, 255, 255, 0.04);
   --bg-glass-hover: rgba(255, 255, 255, 0.08);
   --border-subtle: rgba(255, 255, 255, 0.08);
@@ -26,7 +26,7 @@
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
-  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.6);
   --transition-fast: 150ms ease;
   --transition-med: 250ms ease;
 }
@@ -61,7 +61,7 @@ html, body {
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  background: linear-gradient(180deg, rgba(17, 24, 39, 0.95), rgba(10, 14, 26, 0.98));
+  background: linear-gradient(180deg, rgba(22, 22, 26, 0.95), rgba(12, 12, 14, 0.98));
   border-bottom: 1px solid var(--border-subtle);
   backdrop-filter: blur(20px);
   z-index: 100;
@@ -213,7 +213,7 @@ html, body {
   align-items: center;
   gap: 20px;
   padding: 0 16px;
-  background: rgba(17, 24, 39, 0.95);
+  background: rgba(22, 22, 26, 0.95);
   border-top: 1px solid var(--border-subtle);
   font-size: 12px;
   color: var(--text-secondary);
