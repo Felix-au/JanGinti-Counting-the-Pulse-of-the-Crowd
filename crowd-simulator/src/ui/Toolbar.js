@@ -2,6 +2,7 @@
  * Toolbar — Top toolbar for edit mode selection and scenario controls.
  */
 import { stateManager } from '../core/StateManager.js';
+import { crowdCounter } from '../inference/CrowdCounter.js';
 
 export class Toolbar {
   constructor(container) {
@@ -9,18 +10,22 @@ export class Toolbar {
     this._render();
     stateManager.on('editModeChanged', () => this._render());
     stateManager.on('scenarioChanged', () => this._render());
+    crowdCounter.onStatusChange(() => this._render());
   }
 
   _render() {
     const mode = stateManager.state.editMode;
     const scenario = stateManager.getActiveScenario();
+    const status = crowdCounter.getBackendStatus();
 
     this.container.innerHTML = `
       <div class="toolbar-left">
         <div class="app-brand">
           <span class="brand-icon">🔬</span>
           <span class="brand-text">CrowdFlow Simulator</span>
-          <span class="brand-badge">CSRNet Powered</span>
+          <span class="brand-badge ${status.connected ? 'connected' : 'disconnected'}">
+            ${status.connected ? '⚡ CSRNet Connected' : '⚠️ Backend Disconnected (Simulation Mode)'}
+          </span>
         </div>
       </div>
       <div class="toolbar-center">
@@ -63,3 +68,4 @@ export class Toolbar {
     }
   }
 }
+

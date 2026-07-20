@@ -367,12 +367,14 @@ export class AreaEditor {
 
     // Show loading
     const resultEl = this.container.querySelector('#prediction-result');
+    const isBackendConnected = crowdCounter.getBackendStatus().connected;
+
     if (resultEl) {
       resultEl.style.display = 'block';
       resultEl.innerHTML = `
         <div class="prediction-loading">
           <div class="spinner"></div>
-          <span>Analyzing crowd density with CSRNet...</span>
+          <span>${isBackendConnected ? 'Analyzing crowd density with CSRNet...' : 'Estimating count (Simulation Mode — Backend Disconnected)...'}</span>
         </div>
       `;
     }

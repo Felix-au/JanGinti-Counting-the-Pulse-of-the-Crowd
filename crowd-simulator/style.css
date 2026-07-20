@@ -102,6 +102,19 @@ html, body {
   background: rgba(0, 212, 255, 0.15);
   color: var(--accent-cyan);
   border: 1px solid rgba(0, 212, 255, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.brand-badge.connected {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-green);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.brand-badge.disconnected {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent-orange);
+  border-color: rgba(245, 158, 11, 0.3);
 }
 
 .toolbar-modes {
@@ -768,3 +781,87 @@ html, body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+
+/* ── Backend Status Card ── */
+.backend-card {
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all var(--transition-med);
+}
+
+.backend-card.connected {
+  border-left: 3px solid var(--accent-green);
+  background: rgba(16, 185, 129, 0.04);
+}
+
+.backend-card.disconnected {
+  border-left: 3px solid var(--accent-orange);
+  background: rgba(245, 158, 11, 0.04);
+}
+
+.backend-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.backend-card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.backend-card-body {
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.backend-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+}
+
+.backend-detail span {
+  color: var(--text-muted);
+}
+
+.backend-warning {
+  color: var(--accent-orange);
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.backend-hint {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.backend-cmd {
+  display: block;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--accent-cyan);
+  margin-top: 4px;
+  user-select: all;
+}
+
+.btn-block {
+  width: 100%;
+  justify-content: center;
+  margin-top: 4px;
+}
+

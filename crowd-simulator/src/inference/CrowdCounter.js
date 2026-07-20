@@ -4,33 +4,83 @@
  */
 export class CrowdCounter {
   constructor() {
-    this.mode = 'backend'; // default to real inference
+    this.mode = 'simulation'; // default until health check completes
     this.backendUrl = 'http://localhost:8000';
-    this._checkBackend();
+    this.status = {
+      connected: false,
+      device: null,
+      weightsLoaded: false,
+      lastChecked: null,
+    };
+    this._listeners = new Set();
+    this.checkBackend();
+
+    // Periodically re-check connection every 15 seconds
+    setInterval(() => this.checkBackend(), 15000);
   }
 
-  async _checkBackend() {
+  onStatusChange(fn) {
+    this._listeners.add(fn);
+    fn(this.getBackendStatus());
+    return () => this._listeners.delete(fn);
+  }
+
+  _notify() {
+    const status = this.getBackendStatus();
+    this._listeners.forEach((fn) => fn(status));
+  }
+
+  getBackendStatus() {
+    return {
+      mode: this.mode,
+      backendUrl: this.backendUrl,
+      ...this.status,
+    };
+  }
+
+  async checkBackend() {
     try {
       const res = await fetch(`${this.backendUrl}/health`, { signal: AbortSignal.timeout(3000) });
       if (res.ok) {
         const data = await res.json();
-        console.log('✅ CSRNet backend connected:', data);
         this.mode = 'backend';
+        this.status = {
+          connected: true,
+          device: data.device || 'CPU',
+          weightsLoaded: data.weights_loaded ?? true,
+          lastChecked: new Date(),
+        };
+        console.log('✅ CSRNet backend connected:', data);
+      } else {
+        throw new Error(`HTTP ${res.status}`);
       }
     } catch {
-      console.warn('⚠️ CSRNet backend not available. Start it with: python backend/server.py');
       this.mode = 'simulation';
+      this.status = {
+        connected: false,
+        device: null,
+        weightsLoaded: false,
+        lastChecked: new Date(),
+      };
+      console.warn('⚠️ CSRNet backend not available. Running in simulation mode.');
     }
+    this._notify();
+    return this.getBackendStatus();
   }
 
   async predict(imageFile) {
-    // Always try backend first
-    try {
-      return await this._backendPredict(imageFile);
-    } catch (e) {
-      console.warn('Backend prediction failed, falling back to simulation:', e.message);
-      return this._simulatePredict(imageFile);
+    if (this.mode === 'backend') {
+      try {
+        return await this._backendPredict(imageFile);
+      } catch (e) {
+        console.warn('Backend prediction failed, falling back to simulation:', e.message);
+        this.mode = 'simulation';
+        this.status.connected = false;
+        this._notify();
+        return this._simulatePredict(imageFile);
+      }
     }
+    return this._simulatePredict(imageFile);
   }
 
   async _backendPredict(imageFile) {
@@ -78,3 +128,4 @@ export class CrowdCounter {
 }
 
 export const crowdCounter = new CrowdCounter();
+

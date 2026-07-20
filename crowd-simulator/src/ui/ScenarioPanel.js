@@ -4,6 +4,7 @@
 import { stateManager } from '../core/StateManager.js';
 import { createScenario, cloneScenario } from '../core/Scenario.js';
 import { getPrebuiltScenarios } from '../data/prebuiltScenarios.js';
+import { crowdCounter } from '../inference/CrowdCounter.js';
 
 export class ScenarioPanel {
   constructor(container) {
@@ -11,11 +12,13 @@ export class ScenarioPanel {
     this._render();
     stateManager.on('scenariosUpdated', () => this._render());
     stateManager.on('scenarioChanged', () => this._render());
+    crowdCounter.onStatusChange(() => this._render());
   }
 
   _render() {
     const scenarios = stateManager.state.scenarios;
     const activeId = stateManager.state.activeScenarioId;
+    const backendStatus = crowdCounter.getBackendStatus();
 
     this.container.innerHTML = `
       <div class="panel-header">
@@ -47,6 +50,29 @@ export class ScenarioPanel {
           <button class="template-btn" data-template="festival">🎪 Festival</button>
           <button class="template-btn" data-template="stadium">🏟️ Stadium</button>
           <button class="template-btn" data-template="airport">✈️ Airport</button>
+        </div>
+      </div>
+      <div class="panel-section">
+        <h3><span class="icon">🔌</span> Backend Connection</h3>
+        <div class="backend-card ${backendStatus.connected ? 'connected' : 'disconnected'}">
+          <div class="backend-card-header">
+            <span class="status-dot ${backendStatus.connected ? 'green' : 'orange pulse'}"></span>
+            <span class="backend-card-title">${backendStatus.connected ? 'CSRNet FastAPI Connected' : 'Backend Disconnected'}</span>
+          </div>
+          <div class="backend-card-body">
+            ${backendStatus.connected ? `
+              <div class="backend-detail"><span>Inference:</span> <strong>PyTorch CSRNet</strong></div>
+              <div class="backend-detail"><span>Device:</span> <strong>${backendStatus.device?.toUpperCase() || 'CPU'}</strong></div>
+              <div class="backend-detail"><span>Weights:</span> <strong>${backendStatus.weightsLoaded ? 'Loaded' : 'Random'}</strong></div>
+            ` : `
+              <p class="backend-warning">Mode: <strong>Simulation (Synthetic Counts)</strong></p>
+              <p class="backend-hint">To enable real CSRNet crowd counting, run:</p>
+              <code class="backend-cmd">python backend/server.py</code>
+            `}
+          </div>
+          <button id="btn-retry-backend" class="btn btn-sm btn-secondary btn-block">
+            🔄 Retry Connection
+          </button>
         </div>
       </div>
     `;
@@ -109,5 +135,16 @@ export class ScenarioPanel {
         }
       });
     });
+
+    // Retry Backend Connection
+    const retryBtn = this.container.querySelector('#btn-retry-backend');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', async () => {
+        retryBtn.disabled = true;
+        retryBtn.innerHTML = '⌛ Checking...';
+        await crowdCounter.checkBackend();
+      });
+    }
   }
 }
+
