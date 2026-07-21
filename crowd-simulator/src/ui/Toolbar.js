@@ -3,7 +3,6 @@
  */
 import { stateManager } from '../core/StateManager.js';
 import { crowdCounter } from '../inference/CrowdCounter.js';
-import { Modal } from './Modal.js';
 
 export class Toolbar {
   constructor(container) {
@@ -50,18 +49,11 @@ export class Toolbar {
       </div>
       <div class="toolbar-right">
         <div class="mode-indicator" id="mode-indicator"></div>
-        <button id="btn-shortcuts" class="btn btn-sm btn-secondary" title="Keyboard Shortcuts">
-          <span>❓ Shortcuts</span>
-        </button>
       </div>
     `;
 
     this.container.querySelectorAll('.mode-btn').forEach(btn => {
       btn.addEventListener('click', () => stateManager.setEditMode(btn.dataset.mode));
-    });
-
-    this.container.querySelector('#btn-shortcuts')?.addEventListener('click', () => {
-      Modal.shortcutsModal();
     });
 
     const el = this.container.querySelector('#mode-indicator');
@@ -76,5 +68,6 @@ export class Toolbar {
     }
   }
 }
+
 
 
