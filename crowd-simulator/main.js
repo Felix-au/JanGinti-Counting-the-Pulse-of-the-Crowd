@@ -15,6 +15,7 @@ import { Toolbar } from './src/ui/Toolbar.js';
 import { ScenarioPanel } from './src/ui/ScenarioPanel.js';
 import { AreaEditor } from './src/ui/AreaEditor.js';
 import { StatusBar } from './src/ui/StatusBar.js';
+import { Modal } from './src/ui/Modal.js';
 
 // ── Initialize UI Panels ──
 const toolbar = new Toolbar(document.getElementById('toolbar'));
@@ -140,7 +141,7 @@ canvas.addEventListener('mouseleave', () => {
 });
 
 // ── Keyboard shortcuts ──
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', async (e) => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
   if (e.key === '1') stateManager.setEditMode('select');
   if (e.key === '2') stateManager.setEditMode('addArea');
@@ -155,12 +156,15 @@ document.addEventListener('keydown', (e) => {
     if (!scenario) return;
     if (stateManager.state.selectedAreaId) {
       const area = scenario.areas.find(a => a.id === stateManager.state.selectedAreaId);
-      if (area && confirm(`Delete area "${area.name}"?`)) {
-        scenario.paths = scenario.paths.filter(p => p.fromAreaId !== area.id && p.toAreaId !== area.id);
-        scenario.rules = scenario.rules.filter(r => r.areaId !== area.id);
-        scenario.areas = scenario.areas.filter(a => a.id !== area.id);
-        stateManager.clearSelection();
-        stateManager.emit('scenarioUpdated', scenario);
+      if (area) {
+        const confirmed = await Modal.confirm({ title: 'Delete Area', message: `Delete area "${area.name}" and its associated paths?`, confirmText: 'Delete', danger: true });
+        if (confirmed) {
+          scenario.paths = scenario.paths.filter(p => p.fromAreaId !== area.id && p.toAreaId !== area.id);
+          scenario.rules = scenario.rules.filter(r => r.areaId !== area.id);
+          scenario.areas = scenario.areas.filter(a => a.id !== area.id);
+          stateManager.clearSelection();
+          stateManager.emit('scenarioUpdated', scenario);
+        }
       }
     }
   }

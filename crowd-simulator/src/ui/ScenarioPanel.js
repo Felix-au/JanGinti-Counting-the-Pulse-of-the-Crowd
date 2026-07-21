@@ -5,6 +5,7 @@ import { stateManager } from '../core/StateManager.js';
 import { createScenario, cloneScenario } from '../core/Scenario.js';
 import { getPrebuiltScenarios } from '../data/prebuiltScenarios.js';
 import { crowdCounter } from '../inference/CrowdCounter.js';
+import { Modal } from './Modal.js';
 
 export class ScenarioPanel {
   constructor(container) {
@@ -24,9 +25,16 @@ export class ScenarioPanel {
       <div class="panel-header">
         <h2><span class="icon">📋</span> Scenarios</h2>
         <div class="panel-header-actions">
+          <button id="btn-export-scenario" class="btn btn-sm btn-secondary" title="Export JSON">
+            <span>📥 Export</span>
+          </button>
+          <button id="btn-import-scenario" class="btn btn-sm btn-secondary" title="Import JSON">
+            <span>📤 Import</span>
+          </button>
           <button id="btn-new-scenario" class="btn btn-sm btn-primary" title="New Scenario">
             <span>+ New</span>
           </button>
+          <input type="file" id="import-json-input" accept=".json" style="display:none" />
         </div>
       </div>
       <div class="scenario-list">
@@ -90,12 +98,51 @@ export class ScenarioPanel {
     });
 
     // New scenario
-    this.container.querySelector('#btn-new-scenario')?.addEventListener('click', () => {
-      const name = prompt('Scenario name:', 'New Scenario');
+    this.container.querySelector('#btn-new-scenario')?.addEventListener('click', async () => {
+      const name = await Modal.prompt({ title: 'New Scenario', message: 'Enter scenario name:', defaultValue: 'New Scenario' });
       if (!name) return;
       const scenario = createScenario({ name });
       stateManager.addScenario(scenario);
       stateManager.setActiveScenario(scenario.id);
+    });
+
+    // Export Scenario JSON
+    this.container.querySelector('#btn-export-scenario')?.addEventListener('click', () => {
+      const scenario = stateManager.getActiveScenario();
+      if (!scenario) return Modal.alert({ title: 'Export Failed', message: 'No active scenario to export.', icon: '⚠️' });
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(scenario, null, 2));
+      const anchor = document.createElement('a');
+      anchor.setAttribute('href', dataStr);
+      anchor.setAttribute('download', `${scenario.name.toLowerCase().replace(/\s+/g, '-')}-scenario.json`);
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+    });
+
+    // Import Scenario JSON
+    const importInput = this.container.querySelector('#import-json-input');
+    this.container.querySelector('#btn-import-scenario')?.addEventListener('click', () => importInput?.click());
+    importInput?.addEventListener('change', (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          if (!parsed.name || !Array.isArray(parsed.areas)) throw new Error('Invalid scenario JSON structure');
+          const scenario = createScenario({
+            name: `${parsed.name} (Imported)`,
+            areas: parsed.areas || [],
+            paths: parsed.paths || [],
+            rules: parsed.rules || [],
+          });
+          stateManager.addScenario(scenario);
+          stateManager.setActiveScenario(scenario.id);
+        } catch (err) {
+          Modal.alert({ title: 'Import Failed', message: err.message, icon: '❌' });
+        }
+      };
+      reader.readAsText(file);
     });
 
     // Clone
@@ -114,9 +161,10 @@ export class ScenarioPanel {
 
     // Delete
     this.container.querySelectorAll('.btn-delete').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener('click', async (e) => {
         e.stopPropagation();
-        if (confirm('Delete this scenario?')) {
+        const confirmed = await Modal.confirm({ title: 'Delete Scenario', message: 'Delete this scenario permanently?', confirmText: 'Delete', danger: true });
+        if (confirmed) {
           stateManager.removeScenario(btn.dataset.id);
         }
       });
@@ -147,4 +195,5 @@ export class ScenarioPanel {
     }
   }
 }
+
 

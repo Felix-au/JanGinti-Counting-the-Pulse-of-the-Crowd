@@ -4,6 +4,7 @@
 import { stateManager } from '../core/StateManager.js';
 import { createArea, createPath, createRule } from '../core/Scenario.js';
 import { crowdCounter } from '../inference/CrowdCounter.js';
+import { Modal } from './Modal.js';
 
 export class AreaEditor {
   constructor(container) {
@@ -314,8 +315,9 @@ export class AreaEditor {
     });
 
     // Delete area
-    this.container.querySelector('#btn-delete-area')?.addEventListener('click', () => {
-      if (confirm(`Delete area "${area.name}"?`)) {
+    this.container.querySelector('#btn-delete-area')?.addEventListener('click', async () => {
+      const confirmed = await Modal.confirm({ title: 'Delete Area', message: `Delete area "${area.name}" and its associated paths?`, confirmText: 'Delete', danger: true });
+      if (confirmed) {
         scenario.paths = scenario.paths.filter(p => p.fromAreaId !== area.id && p.toAreaId !== area.id);
         scenario.rules = scenario.rules.filter(r => r.areaId !== area.id);
         scenario.areas = scenario.areas.filter(a => a.id !== area.id);
@@ -347,8 +349,9 @@ export class AreaEditor {
       path.bidirectional = e.target.checked;
     });
 
-    this.container.querySelector('#btn-delete-path')?.addEventListener('click', () => {
-      if (confirm(`Delete path "${path.name}"?`)) {
+    this.container.querySelector('#btn-delete-path')?.addEventListener('click', async () => {
+      const confirmed = await Modal.confirm({ title: 'Delete Path', message: `Delete path "${path.name}"?`, confirmText: 'Delete', danger: true });
+      if (confirmed) {
         scenario.paths = scenario.paths.filter(p => p.id !== path.id);
         stateManager.clearSelection();
         stateManager.emit('scenarioUpdated', scenario);
@@ -403,40 +406,12 @@ export class AreaEditor {
     }
   }
 
-  _showAddRuleDialog(area, scenario) {
-    const type = prompt('Rule type?\n1 = Min Paths (always keep N paths open)\n2 = Threshold (open paths based on count)', '1');
-    if (!type) return;
+  async _showAddRuleDialog(area, scenario) {
+    const ruleData = await Modal.ruleDialog(area, scenario);
+    if (!ruleData) return;
 
-    if (type === '1') {
-      const dir = prompt('Direction? (outgoing / incoming / both)', 'outgoing');
-      const min = parseInt(prompt('Minimum paths to keep open:', '1')) || 1;
-      const rule = createRule({
-        areaId: area.id,
-        type: 'MIN_PATHS',
-        direction: dir || 'outgoing',
-        minPaths: min,
-        description: `Always keep at least ${min} ${dir || 'outgoing'} path(s) open`,
-      });
-      scenario.rules.push(rule);
-    } else if (type === '2') {
-      const dir = prompt('Direction? (outgoing / incoming / both)', 'outgoing');
-      const condCount = parseInt(prompt('How many threshold levels?', '2')) || 1;
-      const conditions = [];
-      for (let i = 0; i < condCount; i++) {
-        const thresh = parseInt(prompt(`Level ${i + 1} threshold (count ≥):`, `${(i + 1) * 500}`)) || 500;
-        const paths = parseInt(prompt(`Min paths at count ≥ ${thresh}:`, `${i + 2}`)) || 2;
-        conditions.push({ threshold: thresh, minPaths: paths, direction: dir || 'outgoing' });
-      }
-      const rule = createRule({
-        areaId: area.id,
-        type: 'THRESHOLD',
-        direction: dir || 'outgoing',
-        conditions,
-        description: conditions.map(c => `≥${c.threshold}: ${c.minPaths} ${c.direction} paths`).join(' · '),
-      });
-      scenario.rules.push(rule);
-    }
-
+    const rule = createRule(ruleData);
+    scenario.rules.push(rule);
     stateManager.emit('evaluateRules', { areaId: area.id });
     this._render();
   }
