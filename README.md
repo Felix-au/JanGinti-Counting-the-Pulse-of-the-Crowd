@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="visualizations/architecture.png" width="700" alt="JanGinti Architecture"/>
+  <img src="crowd-simulator/public/logo.png" width="140" alt="JanGinti Logo"/>
 </p>
 <h1 align="center">JanGinti: Counting the Pulse of the Crowd</h1>
 <p align="center">
@@ -83,6 +83,16 @@ JanGinti addresses this gap by introducing a **custom Part C dataset** of 85 Ind
 ---
 
 ## 📸 Visualizations
+
+<p align="center">
+  <img src="crowd-simulator/public/og-image.png" width="800" alt="JanGinti Social Banner & Web Application Preview"/>
+  <br/><em>JanGinti System Overview — CSRNet AI crowd density estimation & interactive crowd flow simulator</em>
+</p>
+
+<p align="center">
+  <img src="visualizations/architecture.png" width="700" alt="JanGinti Architecture"/>
+  <br/><em>JanGinti System Architecture — VGG-16 Frontend + Dilated Conv Backend</em>
+</p>
 
 <p align="center">
   <img src="visualizations/loss_curves.png" width="600" alt="Training Loss Curves"/>
