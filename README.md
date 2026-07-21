@@ -525,7 +525,7 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 **Felix-au** (Harshit Soni)
 
 - 🔗 GitHub: [github.com/Felix-au](https://github.com/Felix-au)
-- 📧 Email: [harshit.soni.23cse@bmu.edu.in](mailto:harshit.soni.23cse@bmu.edu.in)
+- 📧 Email: [felixaugum@gmail.com](mailto:felixaugum@gmail.com)
 
 ---
 
